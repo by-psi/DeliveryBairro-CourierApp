@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "CourierApp",
+    "slug": "CourierApp",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
