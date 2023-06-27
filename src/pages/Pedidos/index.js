@@ -1,5 +1,5 @@
 import { useRef, useMemo, useState, useEffect } from "react";
-import { View, Text, useWindowDimensions, ActivityIndicator, SafeAreaView } from "react-native";
+import { View, Text, useWindowDimensions, ActivityIndicator } from "react-native";
 import { DataStore } from "aws-amplify";
 import { Order } from "../../models";
 
@@ -19,9 +19,7 @@ export default function OrdersScreen() {
   const snapPoints = useMemo(() => ["12%", "95%"], []);
 
   function fetchOrders() {
-    DataStore.query(Order, (order) =>
-      order?.Status.eq("PRONTO_PARA_RETIRADA")
-    ).then(setOrders);
+    DataStore.query(Order, (order) => order?.Status.eq("PRONTO_PARA_RETIRADA")).then(setOrders);
   };
 
   useEffect(() => {
@@ -54,10 +52,13 @@ export default function OrdersScreen() {
   }
 
   return (
-    <View style={{ backgroundColor: "lightblue", flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: "lightblue" }}>
       <PageHeader />
       <MapView 
-        style={{ height, width }}
+        style={{
+          height,
+          width 
+        }}
         showsUserLocation
         followsUserLocation
         initialRegion={{
@@ -81,7 +82,7 @@ export default function OrdersScreen() {
             Você está online!
           </Text>
           <Text style={{ letterSpacing: 0.5, color: "grey" }}>
-            Pedidos Disponíveis: {orders.length}
+            Pedidos Disponíveis: {orders?.length}
           </Text>
         </View>
         <BottomSheetFlatList
@@ -92,4 +93,3 @@ export default function OrdersScreen() {
     </View>
   );
 };
-

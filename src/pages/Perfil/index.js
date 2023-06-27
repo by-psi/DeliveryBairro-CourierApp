@@ -14,7 +14,7 @@ export default function ProfileScreen() {
 
   const navigation = useNavigation();
 
-  const onSave = async () => {
+  async function onSave() {
     if (dbCourier) {
       await updateCourier();
     } else {
@@ -23,7 +23,7 @@ export default function ProfileScreen() {
     navigation.goBack();
   };
 
-  const updateCourier = async () => {
+  async function updateCourier() {
     const courier = await DataStore.save(
       Courier.copyOf(dbCourier, (updated) => {
         updated.name = name;
@@ -33,7 +33,7 @@ export default function ProfileScreen() {
     setDbCourier(courier);
   };
 
-  const createCourier = async () => {
+  async function createCourier() {
     try {
       const courier = await DataStore.save(
         new Courier({
