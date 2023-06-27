@@ -1,16 +1,22 @@
-import { useState } from "react";
+/**
+ * src/pages/Delivery/index.js
+ */
+
+import '@azure/core-asynciterator-polyfill';
+import { useState, useContext } from "react";
 import { View, Text, TextInput, StyleSheet, Button, Alert, Pressable } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { Auth, DataStore } from "aws-amplify";
-import { Courier, TransportationModes } from "../../models";
-import { useAuthContext } from "../../contexts/AuthContext";
-import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
+import { Auth } from "@aws-amplify/auth";
+import { DataStore } from "@aws-amplify/datastore";
+import { Courier, Transporte } from "../../models";
+import { AuthContext } from '../../contexts/AuthContext';
 
 export default function ProfileScreen() {
-  const { dbCourier, sub, setDbCourier } = useAuthContext();
-  const [ name, setName ] = useState(dbCourier?.name || "");
-  const [ transportationMode, setTransportationMode] = useState(TransportationModes.DRIVING);
+  const { sub, dbCourier, setDbCourier } = useContext(AuthContext);
+  const [ nome, setNome ] = useState(dbCourier?.Nome || "");
+  const [ transportationMode, setTransportationMode] = useState(Transporte.BICYCLING);
 
   const navigation = useNavigation();
 
@@ -26,8 +32,8 @@ export default function ProfileScreen() {
   async function updateCourier() {
     const courier = await DataStore.save(
       Courier.copyOf(dbCourier, (updated) => {
-        updated.name = name;
-        updated.transportationMode = transportationMode;
+        updated.Nome = nome;
+        updated.Transporte = transportationMode;
       })
     );
     setDbCourier(courier);
@@ -37,9 +43,9 @@ export default function ProfileScreen() {
     try {
       const courier = await DataStore.save(
         new Courier({
-          name,
-          sub,
-          transportationMode,
+          "Nome": nome,
+          "TokenSMS": sub,
+          "Transporte": transportationMode
         })
       );
       setDbCourier(courier);
@@ -52,18 +58,18 @@ export default function ProfileScreen() {
     <SafeAreaView>
       <Text style={styles.title}>Profile</Text>
       <TextInput
-        value={name}
-        onChangeText={setName}
-        placeholder="Name"
+        value={nome}
+        onChangeText={setNome}
+        placeholder="Nome"
         style={styles.input}
       />
 
       <View style={{ flexDirection: "row" }}>
         <Pressable
-          onPress={() => setTransportationMode(TransportationModes.BICYCLING)}
+          onPress={() => setTransportationMode(Transporte.BICYCLING)}
           style={{
             backgroundColor:
-              transportationMode === TransportationModes.BICYCLING
+              transportationMode === Transporte.BICYCLING
                 ? "#3FC060"
                 : "white",
             margin: 10,
@@ -76,10 +82,10 @@ export default function ProfileScreen() {
           <MaterialIcons name="pedal-bike" size={40} color="black" />
         </Pressable>
         <Pressable
-          onPress={() => setTransportationMode(TransportationModes.DRIVING)}
+          onPress={() => setTransportationMode(Transporte.DRIVING)}
           style={{
             backgroundColor:
-              transportationMode === TransportationModes.DRIVING
+              transportationMode === Transporte.DRIVING
                 ? "#3FC060"
                 : "white",
             margin: 10,

@@ -1,12 +1,17 @@
+/**
+ * src/pages/Delivery/index.js
+ */
+
+import '@azure/core-asynciterator-polyfill';
 import * as Location from "expo-location";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useContext } from "react";
 import { View, useWindowDimensions, ActivityIndicator } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { useOrderContext } from "../../contexts/OrderContext";
-import { DataStore } from "aws-amplify";
+import { AuthContext } from '../../contexts/AuthContext';
+import { OrderContext } from '../../contexts/OrderContext';
+import { DataStore } from "@aws-amplify/datastore";
 import { Courier } from "../../models";
-import { useAuthContext } from "../../contexts/AuthContext";
 
 import styles from "./styles";
 import MapView from "react-native-maps";
@@ -15,8 +20,8 @@ import BottomSheetDetails from "./BottomSheetDetails";
 import CustomMarker from "../../components/CustomMarker";
 
 export default function OrderDeliveryScreen() {
-  const { order, user, fetchOrder } = useOrderContext();
-  const { dbCourier } = useAuthContext();
+  const { order, user, fetchOrder } = useContext(OrderContext);
+  const { dbCourier } = useContext(AuthContext);
   const [ driverLocation, setDriverLocation ] = useState(null);
   const [ totalMinutes, setTotalMinutes ] = useState(0);
   const [ totalKm, setTotalKm ] = useState(0);
@@ -38,8 +43,8 @@ export default function OrderDeliveryScreen() {
     }
     DataStore.save(
       Courier.copyOf(dbCourier, (updated) => {
-        updated.lat = driverLocation.latitude;
-        updated.lng = driverLocation.longitude;
+        updated.Latitude = driverLocation.latitude;
+        updated.Longitude = driverLocation.longitude;
       })
     );
   }, [driverLocation]);
@@ -113,11 +118,11 @@ export default function OrderDeliveryScreen() {
         <MapViewDirections
           origin = {driverLocation}
           destination = {
-            order.status === "PREPARANDO" ? restaurantLocation : deliveryLocation
+            order.Status === "PREPARANDO" ? restaurantLocation : deliveryLocation
           }
           strokeWidth = {10}
           waypoints = {
-            order.status === "PRONTO_PARA_RETIRADA" ? [restaurantLocation] : []
+            order.Status === "PRONTO_PARA_RETIRADA" ? [restaurantLocation] : []
           }
           strokeColor = "#3FC060"
           apikey = {"AIzaSyA40_jSaAHHq6J3o3HKJujVrMHv9gcSV3E"}
@@ -126,7 +131,7 @@ export default function OrderDeliveryScreen() {
             setTotalKm(result.distance);
           }}
         />
-        <CustomMarker data = {order.Restaurant} type="DELIVERY" />
+        <CustomMarker data = {order?.Delivery} type="DELIVERY" />
         <CustomMarker data = {user} type="USUÁRIO" />
       </MapView>
       <BottomSheetDetails
@@ -134,7 +139,7 @@ export default function OrderDeliveryScreen() {
         totalMinutes={totalMinutes}
         onAccepted={zoomInOnDriver}
       />
-      {order.status === "PRONTO_PARA_RETIRADA" && (
+      {order.Status === "PRONTO_PARA_RETIRADA" && (
         <Ionicons
           onPress={() => navigation.goBack()}
           name="arrow-back-circle"
