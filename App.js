@@ -4,11 +4,12 @@
 
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { StatusBar } from 'expo-status-bar';
-import { Image, Text, View, StyleSheet } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { Amplify, I18n } from 'aws-amplify';
 import { Authenticator } from '@aws-amplify/ui-react-native';
 import { translations } from '@aws-amplify/ui';
+import { styles } from "./src/styles";
 
 import logo from './assets/logo.png';
 import marca from './assets/marca.png';
@@ -81,17 +82,3 @@ function AppHeader() {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    alignItems: "center", 
-    justifyContent: "center"
-  },
-  logo: {
-    width: 85, 
-    height: 85
-  },
-  marca: {
-    width: 195, 
-    height: 85
-  },
-});

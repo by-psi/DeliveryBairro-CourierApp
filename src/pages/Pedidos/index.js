@@ -20,7 +20,7 @@ export default function OrdersScreen() {
 
   function fetchOrders() {
     DataStore.query(Order, (order) =>
-      order.Status("eq", "PRONTO_PARA_RETIRADA")
+      order?.Status.eq("PRONTO_PARA_RETIRADA")
     ).then(setOrders);
   };
 
@@ -56,11 +56,8 @@ export default function OrdersScreen() {
   return (
     <View style={{ backgroundColor: "lightblue", flex: 1 }}>
       <PageHeader />
-      <MapView
-        style={{
-          height,
-          width,
-        }}
+      <MapView 
+        style={{ height, width }}
         showsUserLocation
         followsUserLocation
         initialRegion={{
@@ -72,22 +69,15 @@ export default function OrdersScreen() {
       >
         {orders.map((order) => (
           <CustomMarker
-            key={order.id}
-            data={order.Restaurant}
+            key={order?.id}
+            data={order?.Delivery}
             type="DELIVERY"
           />
         ))}
       </MapView>
       <BottomSheet ref={bottomSheetRef} snapPoints={snapPoints}>
         <View style={{ alignItems: "center", marginBottom: 30 }}>
-          <Text
-            style={{
-              fontSize: 20,
-              fontWeight: "600",
-              letterSpacing: 0.5,
-              paddingBottom: 5,
-            }}
-          >
+          <Text style={{ fontSize: 20, fontWeight: "600", letterSpacing: 0.5, paddingBottom: 5 }}>
             Você está online!
           </Text>
           <Text style={{ letterSpacing: 0.5, color: "grey" }}>
