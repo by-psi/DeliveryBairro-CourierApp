@@ -4,7 +4,7 @@
 
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, Text, View, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { Amplify, I18n } from 'aws-amplify';
 import { Authenticator } from '@aws-amplify/ui-react-native';
@@ -12,7 +12,7 @@ import { translations } from '@aws-amplify/ui';
 
 import logo from './assets/logo.png';
 import marca from './assets/marca.png';
-import Navigation from "./src/navigation";
+import AppRoutes from "./src/routes/App.Routes";
 import config from './src/aws-exports';
 
 import AuthContextProvider from './src/contexts/AuthContext';
@@ -37,7 +37,7 @@ export default function App() {
             <AuthContextProvider>
               <OrderContextProvider>
                 <StatusBar style="dark" backgroundColor="#FFF" />
-                <Navigation />
+                <AppRoutes />
               </OrderContextProvider>
             </AuthContextProvider>
           </GestureHandlerRootView>
@@ -76,7 +76,7 @@ function AppHeader() {
     <View style={styles.container}>
       <Image source={ logo } style={styles.logo} resizeMode="contain" />
       <Image source={ marca } style={styles.marca} resizeMode="contain" />
-      <Text>UserApp</Text>
+      <Text>Courier App</Text>
     </View>
   );
 };

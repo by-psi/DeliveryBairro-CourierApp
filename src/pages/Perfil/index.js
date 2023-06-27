@@ -7,7 +7,7 @@ import { useAuthContext } from "../../contexts/AuthContext";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 
-export default function Perfil() {
+export default function ProfileScreen() {
   const { dbCourier, sub, setDbCourier } = useAuthContext();
   const [ name, setName ] = useState(dbCourier?.name || "");
   const [ transportationMode, setTransportationMode] = useState(TransportationModes.DRIVING);

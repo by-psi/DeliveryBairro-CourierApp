@@ -1,5 +1,5 @@
 import { useRef, useMemo, useState, useEffect } from "react";
-import { View, Text, useWindowDimensions, ActivityIndicator } from "react-native";
+import { View, Text, useWindowDimensions, ActivityIndicator, SafeAreaView } from "react-native";
 import { DataStore } from "aws-amplify";
 import { Order } from "../../models";
 
@@ -7,10 +7,11 @@ import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
 import OrderItem from "../../components/OrderItem";
 import MapView from "react-native-maps";
 import CustomMarker from "../../components/CustomMarker";
+import PageHeader from "../../components/PageHeader";
 
 import * as Location from "expo-location";
 
-export default function Pedidos() {
+export default function OrdersScreen() {
   const { width, height } = useWindowDimensions();
   const [ orders, setOrders ] = useState([]);
   const [ driverLocation, setDriverLocation ] = useState(null);
@@ -19,7 +20,7 @@ export default function Pedidos() {
 
   function fetchOrders() {
     DataStore.query(Order, (order) =>
-      order.status("eq", "READY_FOR_PICKUP")
+      order.Status("eq", "PRONTO_PARA_RETIRADA")
     ).then(setOrders);
   };
 
@@ -54,6 +55,7 @@ export default function Pedidos() {
 
   return (
     <View style={{ backgroundColor: "lightblue", flex: 1 }}>
+      <PageHeader />
       <MapView
         style={{
           height,
@@ -72,7 +74,7 @@ export default function Pedidos() {
           <CustomMarker
             key={order.id}
             data={order.Restaurant}
-            type="RESTAURANT"
+            type="DELIVERY"
           />
         ))}
       </MapView>
@@ -86,10 +88,10 @@ export default function Pedidos() {
               paddingBottom: 5,
             }}
           >
-            You're Online
+            Você está online!
           </Text>
           <Text style={{ letterSpacing: 0.5, color: "grey" }}>
-            Available Orders: {orders.length}
+            Pedidos Disponíveis: {orders.length}
           </Text>
         </View>
         <BottomSheetFlatList

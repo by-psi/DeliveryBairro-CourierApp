@@ -14,7 +14,7 @@ import MapViewDirections from "react-native-maps-directions";
 import BottomSheetDetails from "./BottomSheetDetails";
 import CustomMarker from "../../components/CustomMarker";
 
-export default function OrderDelivery() {
+export default function OrderDeliveryScreen() {
   const { order, user, fetchOrder } = useOrderContext();
   const { dbCourier } = useAuthContext();
   const [ driverLocation, setDriverLocation ] = useState(null);
@@ -83,13 +83,13 @@ export default function OrderDelivery() {
   };
 
   const restaurantLocation = {
-    latitude: order?.Restaurant?.lat,
-    longitude: order?.Restaurant?.lng,
+    latitude: order?.Delivery?.Latitude,
+    longitude: order?.Delivery?.Longitude,
   };
 
   const deliveryLocation = {
-    latitude: user?.lat,
-    longitude: user?.lng,
+    latitude: user?.Latitude,
+    longitude: user?.Longitude,
   };
 
   if (!order || !user || !driverLocation) {
@@ -113,11 +113,11 @@ export default function OrderDelivery() {
         <MapViewDirections
           origin = {driverLocation}
           destination = {
-            order.status === "ACCEPTED" ? restaurantLocation : deliveryLocation
+            order.status === "PREPARANDO" ? restaurantLocation : deliveryLocation
           }
           strokeWidth = {10}
           waypoints = {
-            order.status === "READY_FOR_PICKUP" ? [restaurantLocation] : []
+            order.status === "PRONTO_PARA_RETIRADA" ? [restaurantLocation] : []
           }
           strokeColor = "#3FC060"
           apikey = {"AIzaSyA40_jSaAHHq6J3o3HKJujVrMHv9gcSV3E"}
@@ -126,15 +126,15 @@ export default function OrderDelivery() {
             setTotalKm(result.distance);
           }}
         />
-        <CustomMarker data = {order.Restaurant} type="RESTAURANT" />
-        <CustomMarker data = {user} type="USER" />
+        <CustomMarker data = {order.Restaurant} type="DELIVERY" />
+        <CustomMarker data = {user} type="USUÁRIO" />
       </MapView>
       <BottomSheetDetails
         totalKm={totalKm}
         totalMinutes={totalMinutes}
         onAccepted={zoomInOnDriver}
       />
-      {order.status === "READY_FOR_PICKUP" && (
+      {order.status === "PRONTO_PARA_RETIRADA" && (
         <Ionicons
           onPress={() => navigation.goBack()}
           name="arrow-back-circle"

@@ -22,10 +22,11 @@ function AuthContextProvider({ children }) {
     if (!sub) {
       return;
     }
-    DataStore.query(Courier, (courier) => courier?.sub.eq(sub)).then(
+    DataStore.query(Courier, (courier) => courier?.TokenSMS.eq(sub)).then(
       (couriers) => {
         setDbCourier(couriers[0]);
         setLoading(false);
+        console.log('dbCourier: ', dbCourier);
       }
     );
   }, [sub]);
@@ -34,7 +35,7 @@ function AuthContextProvider({ children }) {
     if (!dbCourier) {
       return;
     }
-    const subscription = DataStore.observe(Courier, dbCourier.id).subscribe(
+    const subscription = DataStore.observe(Courier, dbCourier?.id).subscribe(
       (msg) => {
         if (msg.opType === "UPDATE") {
           setDbCourier(msg.element);

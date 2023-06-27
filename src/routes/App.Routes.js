@@ -1,15 +1,20 @@
+/**
+ * DeliveryBairro CourierApp - App.Routes.js
+*/
+
+import { useContext } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { useAuthContext } from "../contexts/AuthContext";
+import { AuthContext } from "../contexts/AuthContext";
 import { ActivityIndicator } from "react-native";
 
-import Pedidos from "../pages/Pedidos";
-import OrderDelivery from "../pages/Delivery";
-import Perfil from "../pages/Perfil";
+import OrdersScreen from "../pages/Pedidos";
+import OrderDeliveryScreen from "../pages/Delivery";
+import ProfileScreen from "../pages/Perfil";
 
 const Stack = createNativeStackNavigator();
 
-export default function Navigation() {
-  const { dbCourier, loading } = useAuthContext();
+export default function AppRoutes() {
+  const { dbCourier, loading } = useContext(AuthContext);
 
   if (loading) {
     return <ActivityIndicator size="large" color="gray" />;
@@ -21,17 +26,17 @@ export default function Navigation() {
         <>
           <Stack.Screen 
             name="OrdersScreen" 
-            component={ Pedidos } 
+            component={ OrdersScreen } 
           />
           <Stack.Screen
             name="OrdersDeliveryScreen"
-            component={ OrderDelivery }
+            component={ OrderDeliveryScreen }
           />
         </>
       ) : (
         <Stack.Screen 
           name="ProfileScreen" 
-          component={ Perfil } 
+          component={ ProfileScreen } 
         />
       )}
     </Stack.Navigator>

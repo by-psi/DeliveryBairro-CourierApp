@@ -4,10 +4,9 @@
 
 import '@azure/core-asynciterator-polyfill';
 import { useState, useEffect, useContext, createContext } from "react";
-import { DataStore } from "@aws-amplify/datastore";
-import { Courier, Order, User, OrderDish } from "../models";
 import { AuthContext } from "./AuthContext";
-import { set } from "react-native-reanimated";
+import { DataStore } from "@aws-amplify/datastore";
+import { Order, User, OrderDish } from "../models";
 
 export const OrderContext = createContext({});
 
@@ -46,8 +45,8 @@ const OrderContextProvider = ({ children }) => {
     // update the order, and change status, and assign the courier
     const updatedOrder = await DataStore.save(
       Order.copyOf(order, (updated) => {
-        updated?.Status = "ACCEPTED";
-        updated?.courierID = dbCourier?.id;
+        updated.Status = "AGUARDANDO";
+        updated.courierID = dbCourier?.id;
       })
     );
     setOrder(updatedOrder);
@@ -57,7 +56,7 @@ const OrderContextProvider = ({ children }) => {
     // update the order, and change status, and assign the courier
     const updatedOrder = await DataStore.save(
       Order.copyOf(order, (updated) => {
-        updated?.Status = "PICKED_UP";
+        updated.Status = "PRONTO_PARA_RETIRADA";
       })
     );
     setOrder(updatedOrder);
@@ -67,7 +66,7 @@ const OrderContextProvider = ({ children }) => {
     // update the order, and change status, and assign the courier
     const updatedOrder = await DataStore.save(
       Order.copyOf(order, (updated) => {
-        updated?.Status = "COMPLETED";
+        updated.Status = "FINALIZADO";
       })
     );
     setOrder(updatedOrder);
@@ -81,3 +80,12 @@ const OrderContextProvider = ({ children }) => {
 };
 
 export default OrderContextProvider;
+
+// NOVO
+// AGUARDANDO
+// PREPARANDO
+// PRONTO_PARA_RETIRADA
+// SAIU_PARA_ENTREGA
+// RECEBIDO
+// FINALIZADO
+// CANCELADO
