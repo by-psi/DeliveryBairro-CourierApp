@@ -23,13 +23,7 @@ export default function PageHeader() {
         <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
           <Image source={marca_png} style={{ width: 195, height: 85 }} resizeMode="contain" />
         </View>
-        <TouchableOpacity 
-          onPress={()=> {
-            alert("Não há pedidos para retirada no momento!");
-          }}
-        >
-          <Image source={cart_png} style={{ width: 85, height: 85 }} resizeMode="contain" />
-        </TouchableOpacity>
+        <Image source={cart_png} style={{ width: 85, height: 85 }} resizeMode="contain" />
       </View>
   );
 }
@@ -48,20 +42,4 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     marginTop: 20,
   },
-  dot:{
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'red',
-    width: 30,
-    height: 30, 
-    borderRadius: 15,
-    position: 'absolute',
-    zIndex: 99,
-    bottom: -4,
-    left: -6
-  },
-  dotText:{
-    fontSize: 14,
-    color: '#FFF'
-  }
 })

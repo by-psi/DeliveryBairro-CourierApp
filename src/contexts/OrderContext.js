@@ -6,7 +6,7 @@ import '@azure/core-asynciterator-polyfill';
 import { useState, useEffect, useContext, createContext } from "react";
 import { AuthContext } from "./AuthContext";
 import { DataStore } from "@aws-amplify/datastore";
-import { Order, User, OrderDish } from "../models";
+import { User, Order, OrderDish } from "../models";
 
 export const OrderContext = createContext({});
 
@@ -73,7 +73,7 @@ const OrderContextProvider = ({ children }) => {
   };
 
   return (
-    <OrderContext.Provider value={{ order, user, dishes, acceptOrder, fetchOrder, pickUpOrder, completeOrder }}>
+    <OrderContext.Provider value={{ user, order, dishes, acceptOrder, fetchOrder, pickUpOrder, completeOrder }}>
       {children}
     </OrderContext.Provider>
   );

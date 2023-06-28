@@ -5,7 +5,7 @@
 import { useContext } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { AuthContext } from "../contexts/AuthContext";
-import { ActivityIndicator } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 
 import OrdersScreen from "../pages/Pedidos";
 import OrderDeliveryScreen from "../pages/Delivery";
@@ -16,8 +16,13 @@ const Stack = createNativeStackNavigator();
 export default function AppRoutes() {
   const { dbCourier, loading } = useContext(AuthContext);
 
+
   if (loading) {
-    return <ActivityIndicator size="large" color="gray" />;
+    return(
+      <View style={{ flex: 1, justifyContent: "center", alignItens: "center"}}>
+        <ActivityIndicator size={"large"} color="#000" />
+      </View>
+    )
   }
 
   return (

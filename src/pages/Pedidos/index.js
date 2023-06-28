@@ -3,11 +3,13 @@
  */
 
 import '@azure/core-asynciterator-polyfill';
-import { useRef, useMemo, useState, useEffect } from "react";
-import { View, Text, useWindowDimensions, ActivityIndicator } from "react-native";
+import { useState, useEffect, useRef, useMemo } from "react";
+import { View, Text, useWindowDimensions, ActivityIndicator, StyleSheet } from "react-native";
 import { DataStore } from "@aws-amplify/datastore";
 import { Order } from "../../models";
+
 import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
+import PageHeader from '../../components/PageHeader';
 import OrderItem from "../../components/OrderItem";
 import MapView from "react-native-maps";
 import CustomMarker from "../../components/CustomMarker";
@@ -16,13 +18,14 @@ import * as Location from "expo-location";
 
 export default function OrdersScreen() {
   const [orders, setOrders] = useState([]);
-  const [driverLocation, setDriverLocation] = useState(null);
+  const [driverLocation, setDriverLocation] = useState([]);
 
   const bottomSheetRef = useRef(null);
   const { width, height } = useWindowDimensions();
 
   const snapPoints = useMemo(() => ["12%", "95%"], []);
   function fetchOrders() {
+    // DataStore.query(Order).then(setOrders);
     DataStore.query(Order, (order) => order.Status.eq("READY_FOR_PICKUP")).then(setOrders);
   };
 
@@ -37,28 +40,35 @@ export default function OrdersScreen() {
     return () => subscription.unsubscribe();
   }, []);
 
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (!status === "granted") {
-        console.log("Nonono");
-        return;
-      }
+  async function getLocation() {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (!status === "granted") {
+      console.log("Nonono");
+      return;
+    }
 
-      let location = await Location.getCurrentPositionAsync();
-      setDriverLocation({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-      });
-    })();
+    let location = await Location.getCurrentPositionAsync();
+    setDriverLocation({
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+    });
+  }
+
+  useEffect(() => {
+    getLocation();
   }, []);
 
   if (!driverLocation) {
-    return <ActivityIndicator size={"large"} color="gray" />;
+    return(
+      <View style={{ flex: 1, justifyContent: "center", alignItens: "center"}}>
+        <ActivityIndicator size={"large"} color="#000" />
+      </View>
+    )
   }
 
   return (
-    <View style={{ backgroundColor: "lightblue", flex: 1 }}>
+    <View style={styles.container}>
+      <PageHeader/>
       <MapView
         style={{
           height,
@@ -76,26 +86,15 @@ export default function OrdersScreen() {
         {orders.map((order) => (
           <CustomMarker
             key={order.id}
-            data={order.Delivery}
-            type="RESTAURANT"
+            id={order.deliveryID}
+            type="DELIVERY"
           />
         ))}
       </MapView>
       <BottomSheet ref={bottomSheetRef} snapPoints={snapPoints}>
-        <View style={{ alignItems: "center", marginBottom: 30 }}>
-          <Text
-            style={{
-              fontSize: 20,
-              fontWeight: "600",
-              letterSpacing: 0.5,
-              paddingBottom: 5,
-            }}
-          >
-            You're Online
-          </Text>
-          <Text style={{ letterSpacing: 0.5, color: "grey" }}>
-            Available Orders: {orders.length}
-          </Text>
+        <View style={styles.bottom}>
+          <Text style={styles.title}>Você está online!</Text>
+          <Text style={styles.subtitle}>Pedidos disponíveis para retirada: {orders.length}</Text>
         </View>
         <BottomSheetFlatList
           data={orders}
@@ -105,3 +104,25 @@ export default function OrdersScreen() {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "lightblue", 
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "600",
+    letterSpacing: 0.5,
+    paddingBottom: 5,
+  },
+  subtitle:{
+    letterSpacing: 0.5, 
+    color: "grey"
+  },
+  bottom:{ 
+    alignItems: "center", 
+    marginBottom: 30 
+  }
+})
+

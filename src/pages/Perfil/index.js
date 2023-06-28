@@ -100,11 +100,8 @@ export default function ProfileScreen() {
       </View>
 
       <Button onPress={onSave} title="Save" />
-      <Text
-        onPress={() => Auth.signOut()}
-        style={{ textAlign: "center", color: "red", margin: 10 }}
-      >
-        Sign out
+      <Text style={{ textAlign: "center", color: "red", margin: 10 }} onPress={() => Auth.signOut()}>
+        Sign Out
       </Text>
     </SafeAreaView>
   );
