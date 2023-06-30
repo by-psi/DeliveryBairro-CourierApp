@@ -11,7 +11,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { AuthContext } from '../../contexts/AuthContext';
 import { OrderContext } from '../../contexts/OrderContext';
 import { DataStore } from "@aws-amplify/datastore";
-import { Courier } from "../../models";
+import { Courier, OrderStatus } from "../../models";
 
 import styles from "./styles";
 import MapView from "react-native-maps";
@@ -122,11 +122,11 @@ export default function OrderDeliveryScreen() {
         <MapViewDirections
           origin = {driverLocation}
           destination = {
-            order.Status === "PREPARANDO" ? restaurantLocation : deliveryLocation
+            order.Status === OrderStatus.PREPARANDO ? restaurantLocation : deliveryLocation
           }
           strokeWidth = {10}
           waypoints = {
-            order.Status === "PRONTO_PARA_RETIRADA" ? [restaurantLocation] : []
+            order.Status === OrderStatus.PRONTO_PARA_RETIRADA ? [restaurantLocation] : []
           }
           strokeColor = "#3FC060"
           apikey = {"AIzaSyA40_jSaAHHq6J3o3HKJujVrMHv9gcSV3E"}
@@ -143,7 +143,7 @@ export default function OrderDeliveryScreen() {
         totalMinutes={totalMinutes}
         onAccepted={zoomInOnDriver}
       />
-      {order.Status === "PRONTO_PARA_RETIRADA" && (
+      {order.Status === OrderStatus.PRONTO_PARA_RETIRADA && (
         <Ionicons
           onPress={() => navigation.goBack()}
           name="arrow-back-circle"

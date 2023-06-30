@@ -6,7 +6,7 @@ import '@azure/core-asynciterator-polyfill';
 import { useState, useEffect, useContext, createContext } from "react";
 import { AuthContext } from "./AuthContext";
 import { DataStore } from "@aws-amplify/datastore";
-import { User, Order, OrderDish } from "../models";
+import { User, Order, OrderDish, OrderStatus } from "../models";
 
 export const OrderContext = createContext({});
 
@@ -45,7 +45,7 @@ const OrderContextProvider = ({ children }) => {
     // update the order, and change status, and assign the courier
     const updatedOrder = await DataStore.save(
       Order.copyOf(order, (updated) => {
-        updated.Status = "AGUARDANDO";
+        updated.Status = OrderStatus.AGUARDANDO;
         updated.courierID = dbCourier?.id;
       })
     );
@@ -56,7 +56,7 @@ const OrderContextProvider = ({ children }) => {
     // update the order, and change status, and assign the courier
     const updatedOrder = await DataStore.save(
       Order.copyOf(order, (updated) => {
-        updated.Status = "PRONTO_PARA_RETIRADA";
+        updated.Status = OrderStatus.PRONTO_PARA_RETIRADA;
       })
     );
     setOrder(updatedOrder);
@@ -66,7 +66,7 @@ const OrderContextProvider = ({ children }) => {
     // update the order, and change status, and assign the courier
     const updatedOrder = await DataStore.save(
       Order.copyOf(order, (updated) => {
-        updated.Status = "FINALIZADO";
+        updated.Status = OrderStatus.FINALIZADO;
       })
     );
     setOrder(updatedOrder);

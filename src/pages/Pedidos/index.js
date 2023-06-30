@@ -6,7 +6,7 @@ import '@azure/core-asynciterator-polyfill';
 import { useState, useEffect, useRef, useMemo } from "react";
 import { View, Text, useWindowDimensions, ActivityIndicator, StyleSheet } from "react-native";
 import { DataStore } from "@aws-amplify/datastore";
-import { Order } from "../../models";
+import { Order, OrderStatus } from "../../models";
 
 import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
 import PageHeader from '../../components/PageHeader';
@@ -26,7 +26,7 @@ export default function OrdersScreen() {
   const snapPoints = useMemo(() => ["12%", "95%"], []);
   function fetchOrders() {
     // DataStore.query(Order).then(setOrders);
-    DataStore.query(Order, (order) => order.Status.eq("READY_FOR_PICKUP")).then(setOrders);
+    DataStore.query(Order, (order) => order.Status.eq(OrderStatus.PRONTO_PARA_RETIRADA)).then(setOrders);
   };
 
   useEffect(() => {
