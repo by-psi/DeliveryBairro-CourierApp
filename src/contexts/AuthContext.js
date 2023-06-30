@@ -22,13 +22,12 @@ function AuthContextProvider({ children }) {
     if (!sub) {
       return;
     }
-    DataStore.query(Courier, (courier) => courier?.TokenSMS.eq(sub)).then(
-      (couriers) => {
-        setDbCourier(couriers[0]);
-        setLoading(false);
-        console.log('dbCourier: ', dbCourier);
-      }
-    );
+    async function fetchCourier() {
+      const couriers = await DataStore.query(Courier, (c)=>c.TokenSMS.eq(sub));
+      setDbCourier(couriers[0]);
+    }
+    fetchCourier();
+    console.log('dbCourier: ', dbCourier);
   }, [sub]);
 
   useEffect(() => {

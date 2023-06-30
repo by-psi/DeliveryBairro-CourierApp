@@ -24,9 +24,10 @@ export default function OrdersScreen() {
   const { width, height } = useWindowDimensions();
 
   const snapPoints = useMemo(() => ["12%", "95%"], []);
-  function fetchOrders() {
+
+  async function fetchOrders() {
     // DataStore.query(Order).then(setOrders);
-    DataStore.query(Order, (order) => order.Status.eq(OrderStatus.PRONTO_PARA_RETIRADA)).then(setOrders);
+    await DataStore.query(Order, (order) => order.Status.eq(OrderStatus.PRONTO_PARA_RETIRADA)).then(setOrders);
   };
 
   useEffect(() => {
