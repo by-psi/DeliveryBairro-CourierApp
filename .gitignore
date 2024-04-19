@@ -50,6 +50,7 @@ yarn-error.log
 .metro-health-check*
 
 # Expo
+.env
 .expo/
 web-build/
 dist/

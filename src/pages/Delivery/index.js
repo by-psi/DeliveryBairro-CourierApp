@@ -100,7 +100,7 @@ export default function OrderDeliveryScreen() {
   if (!order || !user || !driverLocation) {
     return(
       <View style={{ flex: 1, justifyContent: "center", alignItens: "center"}}>
-        <ActivityIndicator size={"large"} color="#000" />
+        <ActivityIndicator size={"large"} color="#FF0000" />
       </View>
     )
   }

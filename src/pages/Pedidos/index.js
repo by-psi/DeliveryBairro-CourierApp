@@ -62,7 +62,7 @@ export default function OrdersScreen() {
   if (!driverLocation) {
     return(
       <View style={{ flex: 1, justifyContent: "center", alignItens: "center"}}>
-        <ActivityIndicator size={"large"} color="#000" />
+        <ActivityIndicator size={"large"} color="#FFF000" />
       </View>
     )
   }

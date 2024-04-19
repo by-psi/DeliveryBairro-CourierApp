@@ -1,3 +1,7 @@
+/**
+ * src/components/OrderItem/index.js
+ */
+
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import { Entypo } from "@expo/vector-icons";

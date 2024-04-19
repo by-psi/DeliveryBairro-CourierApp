@@ -13,17 +13,13 @@ export const AuthContext = createContext({});
 function AuthContextProvider({ children }) {
   const { user } = useAuthenticator();
   const [ dbCourier, setDbCourier ] = useState(null);
-  const [ loading, setLoading ] = useState(true);
 
   const sub = user?.attributes?.sub;
   console.log('user sub: ', sub);
 
   useEffect(() => {
-    if (!sub) {
-      return;
-    }
     async function fetchCourier() {
-      const couriers = await DataStore.query(Courier, (c)=>c.TokenSMS.eq(sub));
+      const couriers = await DataStore.query(Courier, (c) => c.TokenSMS.eq(sub));
       setDbCourier(couriers[0]);
     }
     fetchCourier();
@@ -45,7 +41,7 @@ function AuthContextProvider({ children }) {
   }, [dbCourier]);
 
   return (
-    <AuthContext.Provider value={{ sub, dbCourier, setDbCourier, loading }}>
+    <AuthContext.Provider value={{ sub, dbCourier, setDbCourier }}>
       {children}
     </AuthContext.Provider>
   );

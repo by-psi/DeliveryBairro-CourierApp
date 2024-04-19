@@ -14,16 +14,15 @@ import ProfileScreen from "../pages/Perfil";
 const Stack = createNativeStackNavigator();
 
 export default function AppRoutes() {
-  const { dbCourier, loading } = useContext(AuthContext);
+  const { dbCourier } = useContext(AuthContext);
 
-
-  if (loading) {
-    return(
-      <View style={{ flex: 1, justifyContent: "center", alignItens: "center"}}>
-        <ActivityIndicator size={"large"} color="#000" />
-      </View>
-    )
-  }
+  // if (loading) {
+  //   return(
+  //     <View style={{ flex: 1, justifyContent: "center", alignItens: "center"}}>
+  //       <ActivityIndicator size={"large"} color="#FF0000" />
+  //     </View>
+  //   )
+  // }
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>

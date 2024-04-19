@@ -18,6 +18,8 @@ export default function ProfileScreen() {
   const [ nome, setNome ] = useState(dbCourier?.Nome || "");
   const [ transportationMode, setTransportationMode] = useState(Transporte.BICYCLING);
 
+  Alert.alert('Dados/Perfil: ', sub, dbCourier);
+  
   const navigation = useNavigation();
 
   async function onSave() {
