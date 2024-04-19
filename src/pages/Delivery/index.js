@@ -129,7 +129,7 @@ export default function OrderDeliveryScreen() {
             order.Status === OrderStatus.PRONTO_PARA_RETIRADA ? [restaurantLocation] : []
           }
           strokeColor = "#3FC060"
-          apikey = {"AIzaSyAlhrqxSDSZUBvWgwz5Xh43tpnn3PcJj4M"}
+          apikey = {"GOOGLE_API_KEY"}
           onReady = {(result) => {
             setTotalMinutes(result.duration);
             setTotalKm(result.distance);
