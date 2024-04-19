@@ -52,6 +52,7 @@ yarn-error.log
 # Expo
 .env
 .expo/
+.env
 web-build/
 dist/
 

@@ -19,6 +19,11 @@ import MapViewDirections from "react-native-maps-directions";
 import BottomSheetDetails from "./BottomSheetDetails";
 import CustomMarker from "../../components/CustomMarker";
 
+/*
+importante incluir e inserir a chave GOOGLE_API_KEY a partir do arquivo .env (enviroment keys), removida do repositório por motivos
+de segurança
+*/
+
 export default function OrderDeliveryScreen() {
   const { order, user, fetchOrder } = useContext(OrderContext);
   const { dbCourier } = useContext(AuthContext);
@@ -129,7 +134,7 @@ export default function OrderDeliveryScreen() {
             order.Status === OrderStatus.PRONTO_PARA_RETIRADA ? [restaurantLocation] : []
           }
           strokeColor = "#3FC060"
-          apikey = {"AIzaSyAlhrqxSDSZUBvWgwz5Xh43tpnn3PcJj4M"}
+          apikey = {"GOOGLE_API_KEY"}
           onReady = {(result) => {
             setTotalMinutes(result.duration);
             setTotalKm(result.distance);
