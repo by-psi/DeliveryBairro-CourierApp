@@ -19,6 +19,11 @@ import MapViewDirections from "react-native-maps-directions";
 import BottomSheetDetails from "./BottomSheetDetails";
 import CustomMarker from "../../components/CustomMarker";
 
+/*
+importante incluir e inserir a chave GOOGLE_API_KEY a partir do arquivo .env (enviroment keys), removida do repositório por motivos
+de segurança
+*/
+
 export default function OrderDeliveryScreen() {
   const { order, user, fetchOrder } = useContext(OrderContext);
   const { dbCourier } = useContext(AuthContext);
